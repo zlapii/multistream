@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zlaps Multi Stream</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            color: #fff;
+            overflow: hidden;  /* Prevent scrolling */
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .header {
+            text-align: center;
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            box-sizing: border-box; /* Include padding in the width calculation */
+        }
+        .clock {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 18px;
+            color: #ddd;
+        }
+        .footer {
+            text-align: center;
+            padding: 5px;
+            background-color: #333;
+            font-size: 14px;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+            box-sizing: border-box; /* Include padding in the width calculation */
+        }
+        .controls {
+            margin: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            position: absolute;
+            top: 60px; /* Adjusted to be below the fixed header */
+            z-index: 1;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 columns */
+            gap: 10px;
+            width: 100%;
+            flex-grow: 1;
+            padding: 10px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            margin-top: 140px; /* Add extra space to avoid overlap with controls section */
+        }
+        .tile {
+            position: relative;
+            background-color: #000;
+            width: 100%;
+            height: 0;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            overflow: hidden;
+        }
+        .tile iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .remove-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 2px 5px;
+            cursor: pointer;
+            z-index: 10;
+        }
+    </style>
+    <script>
+        // Updates the clock
+        function updateClock() {
+            const clock = document.querySelector('.clock');
+            const now = new Date();
+            const time = now.toLocaleTimeString('en-GB', { timeZone: 'Europe/London' });
+            clock.textContent = ${time} GMT+1; // Append GMT+1 next to the time
+        }
+
+        // Adds a new stream tile (either Twitch or regular)
+        function addTile() {
+            const url = document.getElementById('streamUrl').value;
+            const twitchUrl = document.getElementById('twitchUrl').value;
+            if (!url && !twitchUrl) return;
+
+            const grid = document.querySelector('.grid');
+            const tile = document.createElement('div');
+            tile.classList.add('tile');
+
+            let iframe;
+            if (twitchUrl) {
+                // Embed Twitch stream with the parent parameter
+                iframe = document.createElement('iframe');
+                iframe.src = https://player.twitch.tv/?channel=${twitchUrl}&parent=streams.html;
+                iframe.allowFullscreen = true;
+            } else {
+                // Embed a regular stream
+                iframe = document.createElement('iframe');
+                iframe.src = url;
+                iframe.allowFullscreen = true;
+                iframe.scrolling = "no";
+            }
+
+            const removeButton = document.createElement('button');
+            removeButton.classList.add('remove-button');
+            removeButton.textContent = 'X';
+            removeButton.onclick = () => grid.removeChild(tile);
+
+            tile.appendChild(removeButton);
+            tile.appendChild(iframe);
+            grid.appendChild(tile);
+
+            document.getElementById('streamUrl').value = '';
+            document.getElementById('twitchUrl').value = ''; // Clear Twitch URL input after adding
+        }
+
+        setInterval(updateClock, 1000); // Update clock every second
+    </script>
+</head>
+<body>
+    <!-- Header with clock -->
+    <div class="header">
+        Zlaps Multi Stream
+        <div class="clock"></div>
+    </div>
+
+    <!-- Controls section -->
+    <div class="controls">
+        <input type="text" id="streamUrl" placeholder="Enter regular stream URL" size="50">
+        <input type="text" id="twitchUrl" placeholder="Enter Twitch channel name" size="50">
+        <button onclick="addTile()">Add Stream</button>
+    </div>
+
+    <!-- Grid to display stream tiles -->
+    <div class="grid"></div>
+
+    <!-- Footer section -->
+    <div class="footer">
+        All streams presented here are legally sourced and comply with applicable copyright laws for commercial availability.
+    </div>
+</body>
+</html>
