@@ -15,7 +15,6 @@
             background-color: #f4f4f4;
             font-family: 'Arial', sans-serif;
             color: #333;
-            overflow-y: auto; /* Allow vertical scrolling */
         }
 
         .header {
@@ -26,10 +25,7 @@
             font-size: 24px;
             font-weight: bold;
             width: 100%;
-            position: fixed;
-            top: 0;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            z-index: 10;
         }
 
         .clock {
@@ -47,10 +43,7 @@
             color: #fff;
             font-size: 14px;
             width: 100%;
-            position: fixed;
-            bottom: 0; /* Stick footer to bottom */
             box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
-            z-index: 10;
         }
 
         .controls {
@@ -65,10 +58,7 @@
             background: #fff;
             border-radius: 8px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            margin-top: 60px; /* Below header */
-            position: sticky; /* Keeps it in view when scrolling */
-            top: 60px; /* Adjust for header height */
-            z-index: 5;
+            margin-top: 10px; /* Space below the header */
         }
 
         .controls input {
@@ -105,8 +95,6 @@
             flex-grow: 1;
             padding: 10px;
             box-sizing: border-box;
-            margin-top: 10px; /* Ensure no overlap with controls */
-            margin-bottom: 50px; /* Space above footer */
         }
 
         .tile {
