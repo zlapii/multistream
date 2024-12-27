@@ -58,6 +58,9 @@
             color: var(--accent-color);
             text-align: center;
             flex-grow: 1;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
         .header .layout-buttons {
@@ -85,18 +88,32 @@
         .header .layout-buttons label {
             margin-right: 10px;
             font-size: 14px;
-            color: var(--header-footer-text);
+            color: var(--accent-color);
             font-style: italic;
         }
 
         .footer {
-            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
             background-color: var(--header-footer-bg);
             color: var(--accent-color);
             font-size: 14px;
             text-align: center;
             box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
             margin-top: auto;
+        }
+
+        .footer .crypto {
+            display: flex;
+            align-items: center;
+        }
+
+        .footer .crypto img {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
         }
 
         .controls {
@@ -155,11 +172,6 @@
             overflow: hidden;
             border-radius: 10px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .tile:hover {
-            transform: scale(1.05);
         }
 
         .tile iframe {
@@ -272,7 +284,10 @@
     <div class="grid"></div>
 
     <div class="footer">
-        All streams presented here are legally sourced and comply with applicable copyright laws.
+        <div class="crypto">
+            <span>DUJoYcr1maQ26wWy3bDj4kVu8yYHggxTCE (Dogecoin Network)</span>
+        </div>
+        <div>All streams presented here are legally sourced and comply with applicable copyright laws.</div>
     </div>
 </body>
 </html>
