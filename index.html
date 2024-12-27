@@ -11,7 +11,7 @@
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             background-color: #f4f4f4;
             font-family: 'Arial', sans-serif;
             color: #333;
@@ -47,9 +47,10 @@
             color: #fff;
             font-size: 14px;
             width: 100%;
-            position: absolute;
-            bottom: 0;
+            position: fixed;
+            bottom: 0; /* Stick footer to bottom */
             box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
+            z-index: 10;
         }
 
         .controls {
@@ -105,6 +106,7 @@
             padding: 10px;
             box-sizing: border-box;
             margin-top: 10px; /* Ensure no overlap with controls */
+            margin-bottom: 50px; /* Space above footer */
         }
 
         .tile {
