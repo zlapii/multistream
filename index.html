@@ -33,8 +33,9 @@
 
         .header {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
+            position: relative;
             padding: 10px 20px;
             background-color: var(--header-footer-bg);
             color: var(--header-footer-text);
@@ -43,18 +44,9 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .header .logo {
-            text-align: center;
-            flex-grow: 1;
-            font-size: 22px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            color: var(--accent-color);
-        }
-
-        .header .dark-mode-toggle,
-        .header .volume-slider {
-            margin-right: 15px;
+        .header .dark-mode-toggle {
+            position: absolute;
+            left: 10px;
             font-size: 14px;
             color: var(--header-footer-text);
             background: none;
@@ -62,8 +54,11 @@
             cursor: pointer;
         }
 
-        .header .dark-mode-toggle {
-            margin-left: 0;
+        .header .logo {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--accent-color);
         }
 
         .footer {
@@ -76,13 +71,17 @@
             margin-top: auto; /* Pushes footer to the bottom */
         }
 
-        .footer a {
-            color: var(--accent-color);
-            text-decoration: none;
+        .footer .volume-slider-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
         }
 
-        .footer a:hover {
-            text-decoration: underline;
+        .footer input[type="range"] {
+            width: 150px;
+            accent-color: var(--accent-color);
         }
 
         .controls {
@@ -240,10 +239,6 @@
     <div class="header">
         <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌓</button>
         <div class="logo">Zlaps Multi Stream</div>
-        <div>
-            <span class="clock"></span>
-            <input type="range" class="volume-slider" min="0" max="100" value="50" oninput="updateVolume(this.value)">
-        </div>
     </div>
 
     <div class="controls">
@@ -256,8 +251,11 @@
     <div class="grid"></div>
 
     <div class="footer">
-        All streams presented here are legally sourced and comply with applicable copyright laws. <br>
-        Powered by <a href="https://example.com" target="_blank">Zlaps Tech</a>.
+        <p>All streams presented here are legally sourced and comply with applicable copyright laws.</p>
+        <div class="volume-slider-container">
+            <span>Audio Boost:</span>
+            <input type="range" min="0" max="100" value="50" oninput="updateVolume(this.value)">
+        </div>
     </div>
 </body>
 </html>
