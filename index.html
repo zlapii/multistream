@@ -102,7 +102,7 @@
             const clock = document.querySelector('.clock');
             const now = new Date();
             const time = now.toLocaleTimeString('en-GB', { timeZone: 'Europe/London' });
-            clock.textContent = ${time} GMT+1; // Append GMT+1 next to the time
+            clock.textContent = `${time} GMT+1`; // Append GMT+1 next to the time
         }
 
         // Adds a new stream tile (either Twitch or regular)
@@ -117,9 +117,9 @@
 
             let iframe;
             if (twitchUrl) {
-                // Embed Twitch stream with the parent parameter
+                // Embed Twitch stream with the correct parent parameter
                 iframe = document.createElement('iframe');
-                iframe.src = https://player.twitch.tv/?channel=${twitchUrl}&parent=streams.html;
+                iframe.src = `https://player.twitch.tv/?channel=${twitchUrl}&parent=zlapii.github.io`;
                 iframe.allowFullscreen = true;
             } else {
                 // Embed a regular stream
