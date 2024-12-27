@@ -5,14 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zlaps Multi Stream</title>
     <style>
+        :root {
+            --bg-color: #f9f9f9;
+            --text-color: #333;
+            --header-footer-bg: #222;
+            --header-footer-text: #fff;
+            --accent-color: #00bcd4;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #181818;
+            --text-color: #eee;
+            --header-footer-bg: #333;
+            --header-footer-text: #eee;
+            --accent-color: #00bcd4;
+        }
+
         body {
             margin: 0;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            background-color: #f9f9f9;
+            background-color: var(--bg-color);
             font-family: 'Arial', sans-serif;
-            color: #333;
+            color: var(--text-color);
         }
 
         .header {
@@ -20,30 +36,40 @@
             justify-content: space-between;
             align-items: center;
             padding: 10px 20px;
-            background-color: #222;
-            color: #fff;
+            background-color: var(--header-footer-bg);
+            color: var(--header-footer-text);
             font-size: 18px;
             font-weight: 600;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .header .logo {
+            text-align: center;
+            flex-grow: 1;
             font-size: 22px;
             font-weight: 700;
             letter-spacing: 1px;
-            color: #00bcd4;
+            color: var(--accent-color);
         }
 
-        .header .clock {
+        .header .dark-mode-toggle,
+        .header .volume-slider {
+            margin-right: 15px;
             font-size: 14px;
-            font-weight: 400;
-            color: #ccc;
+            color: var(--header-footer-text);
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .header .dark-mode-toggle {
+            margin-left: 0;
         }
 
         .footer {
             padding: 15px 20px;
-            background-color: #222;
-            color: #aaa;
+            background-color: var(--header-footer-bg);
+            color: var(--header-footer-text);
             font-size: 14px;
             text-align: center;
             box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
@@ -51,7 +77,7 @@
         }
 
         .footer a {
-            color: #00bcd4;
+            color: var(--accent-color);
             text-decoration: none;
         }
 
@@ -67,7 +93,7 @@
             flex-wrap: wrap;
             gap: 10px;
             padding: 15px;
-            background: #fff;
+            background: var(--header-footer-text);
             border-radius: 10px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
@@ -84,8 +110,8 @@
         .controls button {
             padding: 10px 20px;
             font-size: 14px;
-            background-color: #00bcd4;
-            color: white;
+            background-color: var(--accent-color);
+            color: var(--header-footer-text);
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -108,7 +134,7 @@
 
         .tile {
             position: relative;
-            background-color: #000;
+            background-color: var(--header-footer-bg);
             width: 100%;
             height: 0;
             padding-top: 56.25%; /* 16:9 Aspect Ratio */
@@ -146,11 +172,24 @@
         }
     </style>
     <script>
+        function toggleDarkMode() {
+            const body = document.body;
+            const currentTheme = body.getAttribute("data-theme");
+            body.setAttribute("data-theme", currentTheme === "dark" ? "light" : "dark");
+        }
+
         function updateClock() {
             const clock = document.querySelector('.clock');
             const now = new Date();
             const time = now.toLocaleTimeString('en-GB', { timeZone: 'Europe/London' });
             clock.textContent = `${time} GMT+1`;
+        }
+
+        function updateVolume(value) {
+            const audioElements = document.querySelectorAll("audio, video");
+            audioElements.forEach(el => {
+                el.volume = value / 100; // Normalize volume between 0 and 1
+            });
         }
 
         function addTile() {
@@ -199,8 +238,12 @@
 </head>
 <body>
     <div class="header">
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌓</button>
         <div class="logo">Zlaps Multi Stream</div>
-        <div class="clock"></div>
+        <div>
+            <span class="clock"></span>
+            <input type="range" class="volume-slider" min="0" max="100" value="50" oninput="updateVolume(this.value)">
+        </div>
     </div>
 
     <div class="controls">
