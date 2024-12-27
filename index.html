@@ -14,7 +14,7 @@
             height: 100vh;
             background-color: #f4f4f4;
             color: #fff;
-            overflow: hidden;  /* Prevent scrolling */
+            overflow: hidden; /* Prevent scrolling */
             transition: background-color 0.3s, color 0.3s;
         }
         .header {
@@ -105,11 +105,13 @@
             clock.textContent = `${time} GMT+1`; // Append GMT+1 next to the time
         }
 
-        // Adds a new stream tile (either Twitch or regular)
+        // Adds a new stream tile (Twitch, Kick.com, or regular URL)
         function addTile() {
             const url = document.getElementById('streamUrl').value;
             const twitchUrl = document.getElementById('twitchUrl').value;
-            if (!url && !twitchUrl) return;
+            const kickUrl = document.getElementById('kickUrl').value; // New input for Kick.com
+
+            if (!url && !twitchUrl && !kickUrl) return; // Ensure at least one input is filled
 
             const grid = document.querySelector('.grid');
             const tile = document.createElement('div');
@@ -117,9 +119,14 @@
 
             let iframe;
             if (twitchUrl) {
-                // Embed Twitch stream with the correct parent parameter
+                // Embed Twitch stream
                 iframe = document.createElement('iframe');
-                iframe.src = `https://player.twitch.tv/?channel=${twitchUrl}&parent=zlapii.github.io`;
+                iframe.src = `https://player.twitch.tv/?channel=${twitchUrl}&parent=${window.location.hostname}`;
+                iframe.allowFullscreen = true;
+            } else if (kickUrl) {
+                // Embed Kick stream
+                iframe = document.createElement('iframe');
+                iframe.src = `https://kick.com/${kickUrl}/embed`;
                 iframe.allowFullscreen = true;
             } else {
                 // Embed a regular stream
@@ -138,8 +145,10 @@
             tile.appendChild(iframe);
             grid.appendChild(tile);
 
+            // Clear inputs after adding the stream
             document.getElementById('streamUrl').value = '';
-            document.getElementById('twitchUrl').value = ''; // Clear Twitch URL input after adding
+            document.getElementById('twitchUrl').value = '';
+            document.getElementById('kickUrl').value = ''; // Clear Kick URL input
         }
 
         setInterval(updateClock, 1000); // Update clock every second
@@ -154,8 +163,9 @@
 
     <!-- Controls section -->
     <div class="controls">
-        <input type="text" id="streamUrl" placeholder="Enter regular stream URL or embeded video" size="50">
+        <input type="text" id="streamUrl" placeholder="Enter regular stream URL" size="50">
         <input type="text" id="twitchUrl" placeholder="Enter Twitch channel name" size="50">
+        <input type="text" id="kickUrl" placeholder="Enter Kick channel name" size="50"> <!-- New input -->
         <button onclick="addTile()">Add Stream</button>
     </div>
 
