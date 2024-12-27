@@ -5,133 +5,87 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zlaps Multi Stream</title>
     <style>
-        :root {
-            --bg-color: #f9f9f9;
-            --text-color: #333;
-            --header-footer-bg: #222;
-            --header-footer-text: #fff;
-            --accent-color: #00bcd4;
-        }
-
-        [data-theme="dark"] {
-            --bg-color: #181818;
-            --text-color: #eee;
-            --header-footer-bg: #333;
-            --header-footer-text: #eee;
-            --accent-color: #00bcd4;
-        }
-
         body {
             margin: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            background-color: var(--bg-color);
             font-family: 'Arial', sans-serif;
-            color: var(--text-color);
+            background-color: #f4f4f4;
+            color: #333;
         }
 
         .header {
+            position: sticky;
+            top: 0;
+            background-color: #222;
+            color: #fff;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             padding: 10px 20px;
-            background-color: var(--header-footer-bg);
-            color: var(--header-footer-text);
-            font-size: 18px;
-            font-weight: 600;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .header .dark-mode-toggle {
-            font-size: 14px;
-            color: var(--header-footer-text);
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-
-        .header .logo {
-            font-size: 22px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            color: var(--accent-color);
-            text-align: center;
-            flex-grow: 1;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            z-index: 10;
         }
 
         .header .layout-buttons {
+            position: absolute;
+            left: 10px;
             display: flex;
-            align-items: center;
+            gap: 5px;
         }
 
-        .header .layout-buttons button {
-            margin: 0 5px;
+        .header button {
             padding: 5px 10px;
             font-size: 14px;
-            background-color: var(--accent-color);
-            color: var(--header-footer-text);
+            color: #fff;
+            background-color: #007bff;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: transform 0.2s, background-color 0.2s;
         }
 
-        .header .layout-buttons button:hover {
-            background-color: #0097a7;
-            transform: scale(1.1);
+        .header button:hover {
+            background-color: #0056b3;
         }
 
-        .header .layout-buttons label {
-            margin-right: 10px;
-            font-size: 14px;
-            color: var(--accent-color);
-            font-style: italic;
-        }
-
-        .footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            background-color: var(--header-footer-bg);
-            color: var(--accent-color);
-            font-size: 14px;
+        .header .title {
             text-align: center;
-            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-            margin-top: auto;
+            font-size: 24px;
+            font-weight: bold;
         }
 
-        .footer .crypto {
-            display: flex;
-            align-items: center;
+        .header .dark-mode-toggle {
+            position: absolute;
+            right: 10px;
+            padding: 5px 10px;
+            font-size: 14px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
-        .footer .crypto img {
-            width: 18px;
-            height: 18px;
-            margin-right: 8px;
+        .header .dark-mode-toggle:hover {
+            background-color: #0056b3;
         }
 
         .controls {
-            margin: 20px;
+            margin: 15px auto;
             width: 90%;
             max-width: 800px;
             display: flex;
+            justify-content: space-between;
             flex-wrap: wrap;
-            gap: 10px;
-            padding: 15px;
-            background: var(--header-footer-text);
-            border-radius: 10px;
+            padding: 10px;
+            background: #fff;
+            border-radius: 8px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1;
         }
 
         .controls input {
             flex: 1;
-            padding: 10px;
+            margin: 5px;
+            padding: 8px;
             font-size: 14px;
             border: 1px solid #ddd;
             border-radius: 5px;
@@ -139,38 +93,37 @@
         }
 
         .controls button {
-            padding: 10px 20px;
+            padding: 8px 12px;
             font-size: 14px;
-            background-color: var(--accent-color);
-            color: var(--header-footer-text);
+            background-color: #007bff;
+            color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .controls button:hover {
-            background-color: #0097a7;
+            background-color: #0056b3;
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* Default 2x2 */
-            gap: 15px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
             width: 100%;
-            padding: 20px;
+            padding: 10px;
             box-sizing: border-box;
-            flex-grow: 1;
         }
 
         .tile {
             position: relative;
-            background-color: var(--header-footer-bg);
+            background-color: #000;
             width: 100%;
             height: 0;
-            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            padding-top: 56.25%;
             overflow: hidden;
-            border-radius: 10px;
+            border-radius: 8px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
         }
 
@@ -185,38 +138,43 @@
 
         .remove-button {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: var(--accent-color);
+            top: 8px;
+            right: 8px;
+            background-color: #007bff;
             color: white;
             border: none;
-            padding: 6px 10px;
+            padding: 4px 8px;
             cursor: pointer;
             z-index: 10;
-            border-radius: 5px;
+            border-radius: 4px;
             font-size: 12px;
-            font-weight: bold;
         }
 
         .remove-button:hover {
-            background-color: #0097a7;
+            background-color: #0056b3;
+        }
+
+        .footer {
+            background-color: #222;
+            color: #007bff;
+            padding: 5px 10px;
+            text-align: center;
+            font-size: 12px;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer .crypto {
+            margin-bottom: 5px;
         }
     </style>
     <script>
         function toggleDarkMode() {
-            const body = document.body;
-            const currentTheme = body.getAttribute("data-theme");
-            body.setAttribute("data-theme", currentTheme === "dark" ? "light" : "dark");
+            document.body.classList.toggle('dark-mode');
         }
 
-        function updateGrid(columns) {
+        function updateLayout(columns) {
             const grid = document.querySelector('.grid');
             grid.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
-        }
-
-        function resetGrid() {
-            const grid = document.querySelector('.grid');
-            grid.innerHTML = ""; // Clear all tiles
         }
 
         function addTile() {
@@ -238,12 +196,10 @@
                 iframe = document.createElement('iframe');
                 iframe.src = `https://player.kick.com/${kickUsername}`;
                 iframe.allowFullscreen = true;
-                iframe.scrolling = "no";
             } else {
                 iframe = document.createElement('iframe');
                 iframe.src = url;
                 iframe.allowFullscreen = true;
-                iframe.scrolling = "no";
             }
 
             const removeButton = document.createElement('button');
@@ -256,22 +212,20 @@
             grid.appendChild(tile);
 
             document.getElementById('streamUrl').value = '';
-            document.getElementById('twitchUrl').value = ''; 
+            document.getElementById('twitchUrl').value = '';
             document.getElementById('kickUsername').value = '';
         }
     </script>
 </head>
 <body>
     <div class="header">
-        <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌓</button>
-        <div class="logo">Zlaps Multi Stream</div>
         <div class="layout-buttons">
-            <label>Layout Changer:</label>
-            <button onclick="updateGrid(2)">2x2</button>
-            <button onclick="updateGrid(3)">3x3</button>
-            <button onclick="updateGrid(4)">4x4</button>
-            <button onclick="resetGrid()">Reset Grid</button>
+            <button onclick="updateLayout(2)">2x2</button>
+            <button onclick="updateLayout(3)">3x3</button>
+            <button onclick="updateLayout(4)">4x4</button>
         </div>
+        <div class="title">Zlaps Multi Stream</div>
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()">Dark Mode</button>
     </div>
 
     <div class="controls">
@@ -285,8 +239,7 @@
 
     <div class="footer">
         <div class="crypto">
-            <img src="https://via.placeholder.com/18" alt="Dogecoin logo">
-            <span>DUJoYcr1maQ26wWy3bDj4kVu8yYHggxTCE (Dogecoin Network)</span>
+            DUJoYcr1maQ26wWy3bDj4kVu8yYHggxTCE (Dogecoin Network)
         </div>
         <div>All streams presented here are legally sourced and comply with applicable copyright laws.</div>
     </div>
