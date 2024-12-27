@@ -62,26 +62,13 @@
         }
 
         .footer {
-            padding: 15px 20px;
+            padding: 10px;
             background-color: var(--header-footer-bg);
             color: var(--header-footer-text);
             font-size: 14px;
             text-align: center;
             box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-            margin-top: auto; /* Pushes footer to the bottom */
-        }
-
-        .footer .volume-slider-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .footer input[type="range"] {
-            width: 150px;
-            accent-color: var(--accent-color);
+            margin-top: auto;
         }
 
         .controls {
@@ -155,7 +142,7 @@
             position: absolute;
             top: 10px;
             right: 10px;
-            background-color: red;
+            background-color: var(--accent-color);
             color: white;
             border: none;
             padding: 6px 10px;
@@ -167,7 +154,7 @@
         }
 
         .remove-button:hover {
-            background-color: darkred;
+            background-color: #0097a7;
         }
     </style>
     <script>
@@ -182,13 +169,6 @@
             const now = new Date();
             const time = now.toLocaleTimeString('en-GB', { timeZone: 'Europe/London' });
             clock.textContent = `${time} GMT+1`;
-        }
-
-        function updateVolume(value) {
-            const audioElements = document.querySelectorAll("audio, video");
-            audioElements.forEach(el => {
-                el.volume = value / 100; // Normalize volume between 0 and 1
-            });
         }
 
         function addTile() {
@@ -251,11 +231,7 @@
     <div class="grid"></div>
 
     <div class="footer">
-        <p>All streams presented here are legally sourced and comply with applicable copyright laws.</p>
-        <div class="volume-slider-container">
-            <span>Audio Boost:</span>
-            <input type="range" min="0" max="100" value="50" oninput="updateVolume(this.value)">
-        </div>
+        All streams presented here are legally sourced and comply with applicable copyright laws.
     </div>
 </body>
 </html>
