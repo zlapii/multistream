@@ -14,7 +14,8 @@
             height: 100vh;
             background-color: #f4f4f4;
             color: #fff;
-            overflow: hidden;  /* Prevent scrolling */
+            overflow-y: auto; /* Allow vertical scrolling for the entire page */
+            overflow-x: hidden; /* Prevent horizontal scrolling */
             transition: background-color 0.3s, color 0.3s;
         }
         .header {
@@ -65,8 +66,8 @@
             flex-grow: 1;
             padding: 10px;
             box-sizing: border-box;
-            overflow-y: auto;
-            margin-top: 140px; /* Add extra space to avoid overlap with controls section */
+            margin-top: 100px; /* Match the height of the header and controls */
+            overflow: visible; /* Let the grid fit within the page flow */
         }
         .tile {
             position: relative;
