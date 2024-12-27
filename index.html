@@ -14,7 +14,6 @@
             height: 100vh;
             background-color: #f4f4f4;
             color: #fff;
-            overflow-y: auto; /* Allow vertical scrolling for the entire page */
             overflow-x: hidden; /* Prevent horizontal scrolling */
             transition: background-color 0.3s, color 0.3s;
         }
@@ -26,8 +25,9 @@
             font-size: 24px;
             font-weight: bold;
             width: 100%;
-            position: fixed;
+            position: sticky;
             top: 0;
+            z-index: 1000; /* Ensure it stays above other content */
             box-sizing: border-box; /* Include padding in the width calculation */
         }
         .clock {
@@ -54,9 +54,6 @@
             display: flex;
             justify-content: center;
             flex-direction: column;
-            position: absolute;
-            top: 60px; /* Adjusted to be below the fixed header */
-            z-index: 1;
         }
         .grid {
             display: grid;
@@ -66,8 +63,7 @@
             flex-grow: 1;
             padding: 10px;
             box-sizing: border-box;
-            margin-top: 100px; /* Match the height of the header and controls */
-            overflow: visible; /* Let the grid fit within the page flow */
+            margin-top: 10px; /* Add spacing after the header */
         }
         .tile {
             position: relative;
