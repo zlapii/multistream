@@ -5,41 +5,92 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zlaps Multi Stream</title>
     <style>
-        /* Ensure the page takes full height and keeps footer at the bottom */
-        html, body {
+        body {
             margin: 0;
-            padding: 0;
-            min-height: 100%;
             display: flex;
             flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            height: 100vh;
             background-color: #f4f4f4;
-            color: #fff;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            overflow: hidden;  /* Prevent scrolling */
         }
 
         .header {
             text-align: center;
-            padding: 10px;
-            background-color: #333;
+            padding: 15px;
+            background-color: #222;
             color: #fff;
             font-size: 24px;
             font-weight: bold;
             width: 100%;
-            box-sizing: border-box;
+            position: fixed;
+            top: 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .clock {
-            float: right;
-            font-size: 18px;
-            color: #ddd;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 16px;
+            color: #aaa;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #222;
+            color: #fff;
+            font-size: 14px;
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .controls {
-            margin: 10px;
-            width: 100%;
+            margin: 15px;
+            width: 90%;
+            max-width: 800px;
             box-sizing: border-box;
             display: flex;
-            justify-content: center;
-            flex-direction: column;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            padding: 10px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 60px; /* Below header */
+            z-index: 1;
+        }
+
+        .controls input {
+            flex: 1;
+            margin: 5px;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+            max-width: 250px; /* Restrict input width */
+        }
+
+        .controls button {
+            padding: 8px 12px;
+            font-size: 14px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .controls button:hover {
+            background-color: #0056b3;
         }
 
         .grid {
@@ -47,9 +98,11 @@
             grid-template-columns: repeat(2, 1fr); /* 2 columns */
             gap: 10px;
             width: 100%;
+            flex-grow: 1;
             padding: 10px;
             box-sizing: border-box;
-            flex-grow: 1; /* Ensures the grid grows to fill available space */
+            overflow-y: auto;
+            margin-top: 140px; /* Below controls */
         }
 
         .tile {
@@ -59,6 +112,8 @@
             height: 0;
             padding-top: 56.25%; /* 16:9 Aspect Ratio */
             overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
         }
 
         .tile iframe {
@@ -72,40 +127,34 @@
 
         .remove-button {
             position: absolute;
-            top: 5px;
-            right: 5px;
+            top: 8px;
+            right: 8px;
             background-color: red;
             color: white;
             border: none;
-            padding: 2px 5px;
+            padding: 4px 8px;
             cursor: pointer;
             z-index: 10;
+            border-radius: 4px;
+            font-size: 12px;
         }
 
-        .footer {
-            text-align: center;
-            padding: 5px;
-            background-color: #333;
-            font-size: 14px;
-            width: 100%;
-            box-sizing: border-box;
-            margin-top: auto; /* Pushes footer to the bottom of the page */
+        .remove-button:hover {
+            background-color: darkred;
         }
     </style>
     <script>
-        // Updates the clock
         function updateClock() {
             const clock = document.querySelector('.clock');
             const now = new Date();
             const time = now.toLocaleTimeString('en-GB', { timeZone: 'Europe/London' });
-            clock.textContent = `${time} GMT+1`; // Append GMT+1 next to the time
+            clock.textContent = `${time} GMT+1`;
         }
 
-        // Adds a new stream tile (either Twitch, Kick, or regular)
         function addTile() {
             const url = document.getElementById('streamUrl').value;
             const twitchUrl = document.getElementById('twitchUrl').value;
-            const kickUsername = document.getElementById('kickUsername').value; // New input for Kick.com username
+            const kickUsername = document.getElementById('kickUsername').value;
             if (!url && !twitchUrl && !kickUsername) return;
 
             const grid = document.querySelector('.grid');
@@ -114,18 +163,15 @@
 
             let iframe;
             if (twitchUrl) {
-                // Embed Twitch stream with the correct parent parameter
                 iframe = document.createElement('iframe');
                 iframe.src = `https://player.twitch.tv/?channel=${twitchUrl}&parent=zlapii.github.io`;
                 iframe.allowFullscreen = true;
             } else if (kickUsername) {
-                // Embed Kick.com stream
                 iframe = document.createElement('iframe');
                 iframe.src = `https://player.kick.com/${kickUsername}`;
                 iframe.allowFullscreen = true;
                 iframe.scrolling = "no";
             } else {
-                // Embed a regular stream
                 iframe = document.createElement('iframe');
                 iframe.src = url;
                 iframe.allowFullscreen = true;
@@ -141,34 +187,29 @@
             tile.appendChild(iframe);
             grid.appendChild(tile);
 
-            // Clear all inputs after adding a stream
             document.getElementById('streamUrl').value = '';
             document.getElementById('twitchUrl').value = ''; 
-            document.getElementById('kickUsername').value = ''; // Clear Kick username input after adding
+            document.getElementById('kickUsername').value = '';
         }
 
-        setInterval(updateClock, 1000); // Update clock every second
+        setInterval(updateClock, 1000);
     </script>
 </head>
 <body>
-    <!-- Header with clock -->
     <div class="header">
         Zlaps Multi Stream
-        <span class="clock"></span>
+        <div class="clock"></div>
     </div>
 
-    <!-- Controls section -->
     <div class="controls">
-        <input type="text" id="streamUrl" placeholder="Enter regular stream URL or embedded video" size="50">
-        <input type="text" id="twitchUrl" placeholder="Enter Twitch channel name" size="50">
-        <input type="text" id="kickUsername" placeholder="Enter Kick.com username" size="50"> <!-- New input for Kick -->
+        <input type="text" id="streamUrl" placeholder="Regular stream URL">
+        <input type="text" id="twitchUrl" placeholder="Twitch channel name">
+        <input type="text" id="kickUsername" placeholder="Kick.com username">
         <button onclick="addTile()">Add Stream</button>
     </div>
 
-    <!-- Grid to display stream tiles -->
     <div class="grid"></div>
 
-    <!-- Footer section -->
     <div class="footer">
         All streams presented here are legally sourced and comply with applicable copyright laws for commercial availability.
     </div>
